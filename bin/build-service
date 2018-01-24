@@ -90,7 +90,10 @@ build_slug() {
 
     local stack_build_image="heroku/${HEROKU_STACK/-/:}-build"
 
-    echo "Buildpack detect:"
+    echo ""
+    echo "===> Buildpack detect:"
+    echo ""
+
     docker run --rm --volume "${WORKDIR}:/workdir" $stack_build_image \
         /workdir/buildpack/bin/detect /workdir/app
 
@@ -106,15 +109,12 @@ build_slug() {
     }
     trap "cleanup \"${WORKDIR}\" \"${stack_build_image}\"" ERR EXIT
 
-    echo "Buildpack compile:"
+    echo ""
+    echo "===> Buildpack compile:"
+    echo ""
+
     docker run --rm --volume "${WORKDIR}:/workdir" $stack_build_image \
         /workdir/buildpack/bin/compile /workdir/app /workdir/cache /workdir/env
-
-    echo "Buildpack release:"
-    docker run --rm --volume "${WORKDIR}:/workdir" $stack_build_image \
-        /workdir/buildpack/bin/release /workdir/app | tee release.yml
-
-    echo "Buildpack uncompressed size:" $(du -hs app)
 }
 
 STEPS="$STEPS generate_entrypoint"
