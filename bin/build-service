@@ -30,7 +30,7 @@ run_build_steps() {
 
 STEPS="$STEPS setup_workdir"
 setup_workdir() {
-    WORKDIR=$(mktemp -d -t build-service-XXXXXX)
+    WORKDIR=$(mktemp -d -p /tmp build-service-XXXXXX)
     cd $WORKDIR
     echo "Using workdir $WORKDIR"
     cleanup() {
